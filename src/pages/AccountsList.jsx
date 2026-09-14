@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { RefreshCw, Landmark, ArrowRight, Loader2, MessageSquareWarning, Search } from 'lucide-react';
+import { RefreshCw, Landmark, ArrowRight, Loader2, MessageSquareWarning, Search, Hash } from 'lucide-react';
 import { api } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
 
@@ -33,6 +33,7 @@ export default function AccountsList() {
     if (!normalizedQuery) return true;
     const statusLabel = STATUS_LABELS[acc.status] || acc.status || '';
     return (
+      (acc.accountNumber || '').toLowerCase().includes(normalizedQuery) ||
       acc.transactionId.toLowerCase().includes(normalizedQuery) ||
       statusLabel.toLowerCase().includes(normalizedQuery) ||
       (acc.rejectionReasonLabel || '').toLowerCase().includes(normalizedQuery)
@@ -57,7 +58,7 @@ export default function AccountsList() {
           className="input input--icon"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Rechercher par identifiant ou statut…"
+          placeholder="Rechercher par numéro de compte ou statut…"
         />
       </div>
 
@@ -89,6 +90,11 @@ export default function AccountsList() {
                   <StatusBadge status={acc.status} />
                 </span>
               </span>
+              {acc.accountNumber && (
+                <span className="tx-card__account-number">
+                  <Hash size={13} /> N° de compte : <strong>{acc.accountNumber}</strong>
+                </span>
+              )}
               <span className="tx-card__id">{acc.transactionId}</span>
               {acc.status === 'REJECTED' && acc.rejectionReasonLabel && (
                 <span className="tx-card__reason">

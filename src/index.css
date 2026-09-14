@@ -357,11 +357,24 @@ h3 {
   color: #8a6a0a;
 }
 
+.tx-card__account-number {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.tx-card__account-number svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .tx-card__id {
   font-family: 'Consolas', 'SFMono-Regular', monospace;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   word-break: break-all;
-  color: var(--text);
+  color: var(--text-muted);
 }
 
 .tx-card__reason {
