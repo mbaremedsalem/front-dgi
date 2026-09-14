@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { RefreshCw, Landmark, ArrowRight, Loader2, MessageSquareWarning } from 'lucide-react';
+import { RefreshCw, Landmark, ArrowRight, Loader2, MessageSquareWarning, Search } from 'lucide-react';
 import { api } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
+
+const STATUS_LABELS = {
+  AUTHORIZED: 'autorisé',
+  REJECTED: 'rejeté',
+  PENDING: 'en attente',
+};
 
 export default function AccountsList() {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [query, setQuery] = useState('');
 
   const load = () => {
     setLoading(true);
@@ -21,6 +28,17 @@ export default function AccountsList() {
 
   useEffect(load, []);
 
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredAccounts = accounts.filter((acc) => {
+    if (!normalizedQuery) return true;
+    const statusLabel = STATUS_LABELS[acc.status] || acc.status || '';
+    return (
+      acc.transactionId.toLowerCase().includes(normalizedQuery) ||
+      statusLabel.toLowerCase().includes(normalizedQuery) ||
+      (acc.rejectionReasonLabel || '').toLowerCase().includes(normalizedQuery)
+    );
+  });
+
   return (
     <div>
       <div className="page-header">
@@ -31,6 +49,16 @@ export default function AccountsList() {
         <button className="btn btn--ghost" onClick={load}>
           <RefreshCw size={15} /> Actualiser
         </button>
+      </div>
+
+      <div className="input-icon search-bar">
+        <Search size={17} className="input-icon__icon" />
+        <input
+          className="input input--icon"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Rechercher par identifiant ou statut…"
+        />
       </div>
 
       {error && <div className="alert alert--error">{error}</div>}
@@ -44,9 +72,13 @@ export default function AccountsList() {
         <div className="empty-state">Aucun compte pour le moment.</div>
       )}
 
-      {!loading && accounts.length > 0 && (
+      {!loading && accounts.length > 0 && filteredAccounts.length === 0 && (
+        <div className="empty-state">Aucun résultat pour « {query} ».</div>
+      )}
+
+      {!loading && filteredAccounts.length > 0 && (
         <div className="card-grid">
-          {accounts.map((acc) => (
+          {filteredAccounts.map((acc) => (
             <Link key={acc.transactionId} to={`/comptes/${acc.transactionId}`} className="tx-card">
               <span className="tx-card__top">
                 <span className="tx-card__icon tx-card__icon--account">
@@ -61,7 +93,7 @@ export default function AccountsList() {
               {acc.status === 'REJECTED' && acc.rejectionReasonLabel && (
                 <span className="tx-card__reason">
                   <MessageSquareWarning size={13} />
-                  Motif : {acc.rejectionReasonLabel} ({acc.rejectionReasonCode})
+                  Motif : {acc.rejectionReasonLabel}
                 </span>
               )}
               <span className="tx-card__cta">
