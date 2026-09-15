@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Landmark, CreditCard, UserCircle2, LogOut } from 'lucide-react';
+import { Landmark, CreditCard, Archive, UserCircle2, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../hooks/useNotifications';
 import NotificationBell from './NotificationBell';
@@ -7,6 +7,7 @@ import NotificationBell from './NotificationBell';
 const NAV_ITEMS = [
   { to: '/comptes', label: 'Comptes', icon: Landmark },
   { to: '/paiements', label: 'Paiement', icon: CreditCard },
+  { to: '/paiements-archives', label: 'Paiements Archivés', icon: Archive },
   { to: '/profil', label: 'Profil', icon: UserCircle2 },
 ];
 

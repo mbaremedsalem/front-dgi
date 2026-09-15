@@ -401,12 +401,23 @@ h3 {
   font-size: 0.8rem;
   color: var(--primary);
   font-weight: 600;
-  margin-top: auto;
   transition: gap 0.15s ease;
 }
 
 .tx-card:hover .tx-card__cta {
   gap: 8px;
+}
+
+.tx-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.tx-card__footer .tx-card__cta {
+  margin-left: auto;
 }
 
 /* -------------------------------------------------------------- Detail card */
@@ -561,6 +572,11 @@ h3 {
 
 .btn--block {
   width: 100%;
+}
+
+.btn--sm {
+  padding: 6px 12px;
+  font-size: 0.78rem;
 }
 
 /* --------------------------------------------------------------------- Forms */
@@ -995,5 +1011,188 @@ h3 {
 
   .detail-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ----------------------------------------------------------------- Modal */
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 32, 22, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  animation: modal-fade-in 0.15s ease;
+}
+
+.modal-card {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(10, 20, 14, 0.28);
+  padding: 32px 28px 24px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: modal-pop-in 0.18s ease;
+}
+
+.modal-card__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+}
+
+.modal-card__close:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.modal-card__icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.modal-card__icon--danger {
+  background: var(--accent-gold-light);
+  color: #8a6a0a;
+}
+
+.modal-card__title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.modal-card__message {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.modal-card__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-card__actions .btn {
+  flex: 1;
+}
+
+/* ------------------------------------------------------------- Print receipt */
+
+.print-receipt {
+  display: none;
+}
+
+.print-receipt__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.print-receipt__brand {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+
+.print-receipt__header h1 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.print-receipt__message {
+  text-align: center;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.print-receipt__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.print-receipt__table th,
+.print-receipt__table td {
+  text-align: left;
+  padding: 9px 6px;
+  border-bottom: 1px solid #ccc;
+}
+
+.print-receipt__table th {
+  width: 45%;
+  color: #444;
+  font-weight: 600;
+}
+
+.print-receipt__footer {
+  margin-top: 24px;
+  font-size: 0.78rem;
+  color: #666;
+  text-align: right;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-receipt,
+  .print-receipt * {
+    visibility: visible;
+  }
+
+  .print-receipt {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px;
+    color: #000;
+    background: #fff;
   }
 }

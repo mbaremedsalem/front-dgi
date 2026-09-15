@@ -38,12 +38,19 @@ export const api = {
     request(BASE_URL, '/stt/token', { method: 'POST', body: { username, password } }),
 
   listAccounts: () => request(BASE_URL, '/api/test/accounts/'),
-  listPayments: () => request(BASE_URL, '/api/test/payments/'),
+  listPayments: (token) => request(BASE_URL, '/api/test/payments/', { token }),
 
   getAccountDetail: (transactionId, token) =>
     request(BASE_URL, `/stt/notificationstt/ACCOUNT/${encodeURIComponent(transactionId)}`, { token }),
   getPaymentDetail: (transactionId, token) =>
     request(BASE_URL, `/stt/notificationstt/PAYMENT/${encodeURIComponent(transactionId)}`, { token }),
+
+  processPayment: (transactionId, token) =>
+    request(BASE_URL, `/api/payments/${encodeURIComponent(transactionId)}/process/`, { method: 'POST', token }),
+
+  listArchivedPayments: (token) => request(BASE_URL, '/api/payments/archive/', { token }),
+  getArchivedPaymentDetail: (transactionId, token) =>
+    request(BASE_URL, `/api/payments/archive/${encodeURIComponent(transactionId)}/`, { token }),
 };
 
 export { ApiError, BASE_URL };
