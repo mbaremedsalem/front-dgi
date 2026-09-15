@@ -36,6 +36,7 @@ async function request(baseUrl, path, { method = 'GET', body, token, headers } =
 export const api = {
   sttLogin: (username, password) =>
     request(BASE_URL, '/stt/token', { method: 'POST', body: { username, password } }),
+  getProfile: (token) => request(BASE_URL, '/api/profile/', { token }),
 
   listAccounts: () => request(BASE_URL, '/api/test/accounts/'),
   listPayments: (token) => request(BASE_URL, '/api/test/payments/', { token }),

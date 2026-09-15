@@ -17,13 +17,15 @@ import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { usePrint } from '../context/PrintContext';
 import { useConfirm } from '../context/ConfirmContext';
+import { canProcessPayment } from '../lib/permissions';
 
 export default function PaymentDetail() {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, role } = useAuth();
   const { printPayment } = usePrint();
   const confirmAction = useConfirm();
   const navigate = useNavigate();
+  const canProcess = canProcessPayment(role);
 
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -76,7 +78,7 @@ export default function PaymentDetail() {
           <h1>Détail du paiement</h1>
           <p className="page-header__subtitle">{id}</p>
         </div>
-        {detail && (
+        {detail && canProcess && (
           <button className="btn btn--primary" onClick={handleProcess} disabled={processing}>
             {processing ? (
               <>

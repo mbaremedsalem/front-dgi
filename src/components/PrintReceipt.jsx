@@ -1,3 +1,6 @@
+import bankLogo from '../assets/image.png';
+import { useAuth } from '../context/AuthContext';
+
 function formatAmount(value) {
   const num = Number(value);
   if (Number.isNaN(num)) return value;
@@ -13,14 +16,19 @@ function formatDate(value) {
 }
 
 export default function PrintReceipt({ payment, message }) {
+  const { username } = useAuth();
+
   if (!payment) return null;
 
   const printedAt = formatDate(new Date());
+  const year = new Date().getFullYear();
 
   return (
     <div className="print-receipt">
+      <div className="print-receipt__accent" />
+
       <div className="print-receipt__header">
-        <span className="print-receipt__brand">DGI — Télépaiement STT</span>
+        <img src={bankLogo} alt="Algerian Union Bank" className="print-receipt__logo" />
         <h1>Traitement de paiement STT</h1>
       </div>
 
@@ -48,7 +56,7 @@ export default function PrintReceipt({ payment, message }) {
           </tr>
           <tr>
             <th>Montant</th>
-            <td>{formatAmount(payment.amount)} MRU</td>
+            <td className="print-receipt__amount">{formatAmount(payment.amount)} MRU</td>
           </tr>
           <tr>
             <th>Raison sociale</th>
@@ -75,7 +83,10 @@ export default function PrintReceipt({ payment, message }) {
         </tbody>
       </table>
 
-      <p className="print-receipt__footer">Document imprimé le {printedAt}</p>
+      <div className="print-receipt__footer">
+        <span>Imprimé par {username || '—'} le {printedAt}</span>
+        <span>Tous droits réservés © {year} DSI</span>
+      </div>
     </div>
   );
 }

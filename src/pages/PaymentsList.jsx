@@ -15,6 +15,7 @@ import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { usePrint } from '../context/PrintContext';
 import { useConfirm } from '../context/ConfirmContext';
+import { canProcessPayment } from '../lib/permissions';
 import StatusBadge from '../components/StatusBadge';
 
 const STATUS_LABELS = {
@@ -26,9 +27,10 @@ const STATUS_LABELS = {
 };
 
 export default function PaymentsList() {
-  const { token } = useAuth();
+  const { token, role } = useAuth();
   const { printPayment } = usePrint();
   const confirmAction = useConfirm();
+  const canProcess = canProcessPayment(role);
 
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -157,7 +159,7 @@ export default function PaymentsList() {
                 </span>
               )}
               <span className="tx-card__footer">
-                {p.status === 'EXECUTED' && (
+                {canProcess && p.status === 'EXECUTED' && (
                   <button
                     type="button"
                     className="btn btn--primary btn--sm"

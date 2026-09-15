@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IdCard, ShieldCheck, TimerReset, LogOut } from 'lucide-react';
+import { IdCard, ShieldCheck, TimerReset, LogOut, UserCircle2, Mail, BadgeCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 function formatDuration(ms) {
@@ -11,13 +11,15 @@ function formatDuration(ms) {
 }
 
 export default function Profile() {
-  const { username, expiresAt, logout } = useAuth();
+  const { username, firstName, lastName, email, roleDisplay, expiresAt, logout } = useAuth();
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const fullName = firstName || lastName ? `${firstName || ''} ${lastName || ''}`.trim() : username;
 
   return (
     <div>
@@ -29,8 +31,19 @@ export default function Profile() {
       </div>
 
       <div className="detail-card profile-card">
-        <div className="profile-card__avatar">{username?.slice(0, 2).toUpperCase()}</div>
+        <div className="profile-card__avatar">{fullName?.slice(0, 2).toUpperCase()}</div>
         <dl className="detail-list detail-list--icons">
+          {(firstName || lastName) && (
+            <div className="detail-list__item">
+              <span className="detail-list__icon">
+                <UserCircle2 size={16} />
+              </span>
+              <div>
+                <dt>Nom complet</dt>
+                <dd>{fullName}</dd>
+              </div>
+            </div>
+          )}
           <div className="detail-list__item">
             <span className="detail-list__icon">
               <IdCard size={16} />
@@ -40,6 +53,28 @@ export default function Profile() {
               <dd>{username}</dd>
             </div>
           </div>
+          {email && (
+            <div className="detail-list__item">
+              <span className="detail-list__icon">
+                <Mail size={16} />
+              </span>
+              <div>
+                <dt>Email</dt>
+                <dd>{email}</dd>
+              </div>
+            </div>
+          )}
+          {roleDisplay && (
+            <div className="detail-list__item">
+              <span className="detail-list__icon">
+                <BadgeCheck size={16} />
+              </span>
+              <div>
+                <dt>Rôle</dt>
+                <dd>{roleDisplay}</dd>
+              </div>
+            </div>
+          )}
           <div className="detail-list__item">
             <span className="detail-list__icon">
               <ShieldCheck size={16} />

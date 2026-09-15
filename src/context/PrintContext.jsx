@@ -8,12 +8,17 @@ export function PrintProvider({ children }) {
 
   useEffect(() => {
     if (!job) return undefined;
+
+    const previousTitle = document.title;
+    document.title = job.payment?.transactionId || 'Traitement de paiement';
+
     const timer = setTimeout(() => window.print(), 100);
     const handleAfterPrint = () => setJob(null);
     window.addEventListener('afterprint', handleAfterPrint);
     return () => {
       clearTimeout(timer);
       window.removeEventListener('afterprint', handleAfterPrint);
+      document.title = previousTitle;
     };
   }, [job]);
 

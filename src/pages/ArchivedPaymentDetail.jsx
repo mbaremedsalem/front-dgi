@@ -35,19 +35,19 @@ export default function ArchivedPaymentDetail() {
     api
       .getArchivedPaymentDetail(id, token)
       .then(setDetail)
-      .catch((err) => setError(err.message || 'Impossible de charger le paiement archivé.'))
+      .catch((err) => setError(err.message || 'Impossible de charger le paiement traité.'))
       .finally(() => setLoading(false));
   }, [id, token]);
 
   return (
     <div>
       <Link to="/paiements-archives" className="back-link">
-        <ArrowLeft size={15} /> Retour aux paiements archivés
+        <ArrowLeft size={15} /> Retour aux paiements traités
       </Link>
 
       <div className="page-header">
         <div>
-          <h1>Détail du paiement archivé</h1>
+          <h1>Détail du paiement traité</h1>
           <p className="page-header__subtitle">{id}</p>
         </div>
         {detail && (
@@ -163,7 +163,7 @@ export default function ArchivedPaymentDetail() {
                   <Archive size={16} />
                 </span>
                 <div>
-                  <dt>Archivé le</dt>
+                  <dt>Traité le</dt>
                   <dd>{detail.archivedAt}</dd>
                 </div>
               </div>

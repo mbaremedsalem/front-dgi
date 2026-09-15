@@ -14,7 +14,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated) {
-    const dest = location.state?.from?.pathname || '/comptes';
+    const dest = location.state?.from?.pathname || '/accueil';
     return <Navigate to={dest} replace />;
   }
 
@@ -24,7 +24,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(username, password);
-      navigate('/comptes', { replace: true });
+      navigate('/accueil', { replace: true });
     } catch (err) {
       setError(err.message || 'Identifiants invalides.');
     } finally {

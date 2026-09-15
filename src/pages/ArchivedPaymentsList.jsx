@@ -19,7 +19,7 @@ export default function ArchivedPaymentsList() {
     api
       .listArchivedPayments(token)
       .then(setPayments)
-      .catch((err) => setError(err.message || 'Impossible de charger les paiements archivés.'))
+      .catch((err) => setError(err.message || 'Impossible de charger les paiements traités.'))
       .finally(() => setLoading(false));
   };
 
@@ -40,8 +40,8 @@ export default function ArchivedPaymentsList() {
     <div>
       <div className="page-header">
         <div>
-          <h1>Paiements archivés</h1>
-          <p className="page-header__subtitle">Paiements déjà traités et archivés</p>
+          <h1>Paiements traités</h1>
+          <p className="page-header__subtitle">Paiements déjà traités</p>
         </div>
         <button className="btn btn--ghost" onClick={load}>
           <RefreshCw size={15} /> Actualiser
@@ -66,7 +66,7 @@ export default function ArchivedPaymentsList() {
       )}
 
       {!loading && !error && payments.length === 0 && (
-        <div className="empty-state">Aucun paiement archivé pour le moment.</div>
+        <div className="empty-state">Aucun paiement traité pour le moment.</div>
       )}
 
       {!loading && payments.length > 0 && filteredPayments.length === 0 && (
