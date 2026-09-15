@@ -1,13 +1,27 @@
+function formatAmount(value) {
+  const num = Number(value);
+  if (Number.isNaN(num)) return value;
+  return num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatDate(value) {
+  if (!value) return '';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export default function PrintReceipt({ payment, message }) {
   if (!payment) return null;
 
-  const printedAt = new Date().toLocaleString('fr-FR');
+  const printedAt = formatDate(new Date());
 
   return (
     <div className="print-receipt">
       <div className="print-receipt__header">
         <span className="print-receipt__brand">DGI — Télépaiement STT</span>
-        <h1>Reçu de paiement</h1>
+        <h1>Traitement de paiement STT</h1>
       </div>
 
       {message && <p className="print-receipt__message">{message}</p>}
@@ -34,7 +48,7 @@ export default function PrintReceipt({ payment, message }) {
           </tr>
           <tr>
             <th>Montant</th>
-            <td>{payment.amount} MRU</td>
+            <td>{formatAmount(payment.amount)} MRU</td>
           </tr>
           <tr>
             <th>Raison sociale</th>
@@ -45,25 +59,17 @@ export default function PrintReceipt({ payment, message }) {
             <td>{payment.taxPayerIban}</td>
           </tr>
           <tr>
-            <th>NIF</th>
-            <td>{payment.nif}</td>
-          </tr>
-          <tr>
-            <th>NTD</th>
-            <td>{payment.ntd}</td>
-          </tr>
-          <tr>
             <th>Téléphone</th>
             <td>{payment.taxPayerPhoneNumber}</td>
           </tr>
           <tr>
             <th>Date de l'opération</th>
-            <td>{payment.operationDate}</td>
+            <td>{formatDate(payment.operationDate)}</td>
           </tr>
           {payment.archivedAt && (
             <tr>
-              <th>Archivé le</th>
-              <td>{payment.archivedAt}</td>
+              <th>Traité le</th>
+              <td>{formatDate(payment.archivedAt)}</td>
             </tr>
           )}
         </tbody>
