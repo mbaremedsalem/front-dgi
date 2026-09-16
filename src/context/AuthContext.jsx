@@ -86,6 +86,22 @@ export function AuthProvider({ children }) {
     setSession(null);
   }, []);
 
+  const changePassword = useCallback(
+    async (oldPassword, newPassword) => {
+      const data = await api.changePassword(session?.token, oldPassword, newPassword);
+      if (data?.token) {
+        setSession((prev) => {
+          if (!prev) return prev;
+          const updated = { ...prev, token: data.token };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+          return updated;
+        });
+      }
+      return data;
+    },
+    [session?.token]
+  );
+
   const value = {
     isAuthenticated: !!session,
     username: session?.username || null,
@@ -100,6 +116,7 @@ export function AuthProvider({ children }) {
     profileLoading,
     login,
     logout,
+    changePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

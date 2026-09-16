@@ -37,6 +37,12 @@ export const api = {
   sttLogin: (username, password) =>
     request(BASE_URL, '/stt/token', { method: 'POST', body: { username, password } }),
   getProfile: (token) => request(BASE_URL, '/api/profile/', { token }),
+  changePassword: (token, oldPassword, newPassword) =>
+    request(BASE_URL, '/api/change-password/', {
+      method: 'POST',
+      token,
+      body: { oldPassword, newPassword },
+    }),
 
   listAccounts: () => request(BASE_URL, '/api/test/accounts/'),
   listPayments: (token) => request(BASE_URL, '/api/test/payments/', { token }),

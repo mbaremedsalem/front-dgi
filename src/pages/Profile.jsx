@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { IdCard, ShieldCheck, TimerReset, LogOut, UserCircle2, Mail, BadgeCheck } from 'lucide-react';
+import { IdCard, ShieldCheck, TimerReset, LogOut, UserCircle2, Mail, BadgeCheck, KeyRound } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ChangePasswordModal from '../components/ChangePasswordModal';
 
 function formatDuration(ms) {
   if (ms <= 0) return 'expiré';
@@ -13,6 +14,7 @@ function formatDuration(ms) {
 export default function Profile() {
   const { username, firstName, lastName, email, roleDisplay, expiresAt, logout } = useAuth();
   const [now, setNow] = useState(Date.now());
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
@@ -94,10 +96,17 @@ export default function Profile() {
             </div>
           </div>
         </dl>
-        <button className="btn btn--danger" onClick={logout}>
-          <LogOut size={16} /> Se déconnecter
-        </button>
+        <div className="profile-card__actions">
+          <button className="btn btn--ghost" onClick={() => setShowChangePassword(true)}>
+            <KeyRound size={16} /> Changer le mot de passe
+          </button>
+          <button className="btn btn--danger" onClick={logout}>
+            <LogOut size={16} /> Se déconnecter
+          </button>
+        </div>
       </div>
+
+      <ChangePasswordModal open={showChangePassword} onClose={() => setShowChangePassword(false)} />
     </div>
   );
 }

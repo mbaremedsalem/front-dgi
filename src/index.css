@@ -516,6 +516,12 @@ h3 {
   font-size: 1.1rem;
 }
 
+.profile-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 /* -------------------------------------------------------------------- Buttons */
 
 .btn {
